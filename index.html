@@ -6,7 +6,7 @@
     <title>All the Fishes</title>
 </head>
 <body>
-<script type="module">
+<script type = module>
 
 //All of our Pixi code
 
@@ -25,49 +25,160 @@ const app = new Application();
 await app.init({
     width:640,
     height:480,
-    background:0x1099bb // #1099bb
+    background:0x1099bb //#1099bb
 });
 document.body.appendChild(app.canvas);
 
 //Load in the fish
 const texture = await Assets.load("img/fish.png");
+const texture2 = await Assets.load("img/coral1.png");
+const texture3 = await Assets.load("img/coral2.webp");
 
-//Create new Sprite from fish
-const fishsprite1 = new Sprite(texture);
-      fishsprite1.scale.set(.5);
-      fishsprite1.x = 0;
-      fishsprite1.y = 0;
-      fishsprite1.angle = 0;
-      fishsprite1.anchor.set(.15,.5);
+//Create new sprite from fish
+const coralsprite1 = new Sprite(texture2);
+    coralsprite1.scale.set(0.2);
+    coralsprite1.x = 0;
+    coralsprite1.y = 0;
+    coralsprite1.angle = 0;
+    coralsprite1.anchor.set(0.40,.5);
+
+const coralsprite2 = new Sprite(texture3);
+    coralsprite2.scale.set(0.2);
+    coralsprite2.x = 0;
+    coralsprite2.y = 0;
+    coralsprite2.angle = 0;
+    coralsprite2.anchor.set(0.40,.5);
+
+const fishsprite1= new Sprite(texture);
+    fishsprite1.scale.set(0.2);
+    fishsprite1.x = 0;
+    fishsprite1.y = 0;
+    fishsprite1.angle = 0;
+    fishsprite1.anchor.set(0.15,.5);
+
+const fishsprite2 = new Sprite(texture);
+    fishsprite2.scale.set(0.2);
+    fishsprite2.x = 0;
+    fishsprite2.y = 0;
+    fishsprite2.angle = 0;
+    fishsprite2.anchor.set(0.15,.5);
+
+const fishsprite3 = new Sprite(texture);
+    fishsprite3.scale.set(0.2);
+    fishsprite3.x = 0;
+    fishsprite3.y = 0;
+    fishsprite3.angle = 0;
+    fishsprite3.anchor.set(0.15,.5);
+
+const fishsprite4 = new Sprite(texture);
+    fishsprite4.scale.set(0.2);
+    fishsprite4.x = 0;
+    fishsprite4.y = 0;
+    fishsprite4.angle = 0;
+    fishsprite4.anchor.set(0.15,.5);
+
+const fishsprite5 = new Sprite(texture);
+    fishsprite5.scale.set(0.2);
+    fishsprite5.x = 0;
+    fishsprite5.y = 0;
+    fishsprite5.angle = 0;
+    fishsprite5.anchor.set(0.15,.5);
+
+const fishsprite6 = new Sprite(texture);
+    fishsprite6.scale.set(0.2);
+    fishsprite6.x = 0;
+    fishsprite6.y = 0;
+    fishsprite6.angle = 0;
+    fishsprite6.anchor.set(0.15,.5);
 
 //Create fish container
+const coral1 = new Container();
+    coral1.x = 200;
+    coral1.y = 400;
+
+const coral2 = new Container();
+    coral2.x = 450;
+    coral2.y = 400;
+
 const fish1 = new Container();
-      fish1.x = 200;
-      fish1.y = 200;
+    fish1.x = 100;
+    fish1.y = 210;
+
+const fish2 = new Container();
+    fish2.x = 155;
+    fish2.y = 300;
+
+const fish3 = new Container();
+    fish3.x = 180;
+    fish3.y = 100;
+
+const fish4 = new Container();
+    fish4.x = 250;
+    fish4.y = 150;
+
+const fish5 = new Container();
+    fish5.x = 300;
+    fish5.y = 250;
+
+const fish6 = new Container();
+    fish6.x = 50;
+    fish6.y = 325;
 
 //Add fishsprite to container
+coral1.addChild(coralsprite1);
+coral2.addChild(coralsprite2);
 fish1.addChild(fishsprite1);
+fish2.addChild(fishsprite2);
+fish3.addChild(fishsprite3);
+fish4.addChild(fishsprite4);
+fish5.addChild(fishsprite5);
+fish6.addChild(fishsprite6);
 
 //Add fish sprite to stage
+app.stage.addChild(coral1); 
+app.stage.addChild(coral2);
 app.stage.addChild(fish1);
+app.stage.addChild(fish2);
+app.stage.addChild(fish3);
+app.stage.addChild(fish4);
+app.stage.addChild(fish5);
+app.stage.addChild(fish6);
 
 //Animation ticker
 app.ticker.add( (time) => {
-    
+
     //Fish bobbing
-    fishsprite1.y = (Math.sin( time.lastTime / 600) * 30);
-    
+    fishsprite1.y = (Math.sin (time.lastTime / 600) * 20);
+    fishsprite2.y = (Math.sin (time.lastTime / 600) * 40);
+    fishsprite3.y = (Math.sin (time.lastTime / 600) * 30);
+    fishsprite4.y = (Math.sin (time.lastTime / 600) * 25);
+    fishsprite5.y = (Math.sin (time.lastTime / 600) * 45);
+    fishsprite6.y = (Math.sin (time.lastTime / 600) * 15);
+
     //Fish flapping
-    let flap = .5 + (Math.sin( time.lastTime / 30) * .005);
+    let flap = .5 + (Math.sin (time.lastTime / 30) * .005) 
     fishsprite1.scale.x = flap;
+    fishsprite2.scale.x = flap;
+    fishsprite3.scale.x = flap;
+    fishsprite4.scale.x = flap;
+    fishsprite5.scale.x = flap;
+    fishsprite6.scale.x = flap;
 
     //Fish head turn
-    let turn = -(Math.cos( time.lastTime / 600) * 5);
+    let turn = -(Math.cos (time.lastTime / 600) * 5)
     fishsprite1.angle = turn;
+    fishsprite2.angle = turn;
+    fishsprite3.angle = turn;
+    fishsprite4.angle = turn;
+    fishsprite5.angle = turn;
+    fishsprite6.angle = turn;
 
+    //Coral swaying
+    let sway = -(Math.cos (time.lastTime / 600) * 5)
+    coralsprite1.angle = sway;
+    coralsprite2.angle = sway;
 
 });
-
 
 </script>
 </body>
