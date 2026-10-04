@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buttons and Event Listeners</title>
+</head>
+<body>
+
+
+<script type = "module">    
+
+//Import Pixi
+import {
+    Application,
+    Sprite,
+    Assets,
+    Container,
+    Graphics,
+    Text,
+    TextStyle
+} from './js/pixi.js';
+
+
+//Create new app
+const app = new Application();
+
+//Initialize the app
+await app.init({
+    width:640,
+    height:480,
+    background:0x1099bb //#1099bb
+});
+document.body.appendChild(app.canvas);
+
+const texture = await Assets.load("img/fish.png");
+
+const fishsprite1 = new Sprite(texture);
+    fishsprite1.scale.set(0.2);
+    fishsprite1.x = 0;
+    fishsprite1.y = 0;
+    fishsprite1.angle = 0;
+    fishsprite1.anchor.set(0.15,.5);
+
+app.stage.addChild(fishsprite1);
+
+//Let's make a button!
+//let whateverButton = new Button(label,w,h);
+class Button extends Container {
+
+    //Constructor
+    constructor(label,w,h) {
+        super(); //Set up and old object
+
+        //Build the button
+        this.l = label;
+        this.w = w;
+        this.h = h;
+        this.c = 0xFFFFFF;
+
+        //Make it listen to events
+        this.eventMode = 'static';
+
+        //Draw the button
+        this.draw();
+
+        //Add hover state
+        this.on('pointerover', (e) => {
+            this.cursor = "pointer";
+            this.alpha = .5;
+        });
+        this.on('pointerout', (e) => {
+            this.cursor = "pointer";
+            this.alpha = .5;
+        });
+        this.on('mouseout', (e) => {
+            this.cursor = "auto";
+            this.alpha = 1;
+        });
+
+    }
+    //Actually set up the button
+    draw() {
+    this.body = new Graphics()
+                .rect(0,0, this.w, this.h)
+                .fill(this.c);
+    this.addChild(this.body);
+
+    //Draw the label
+    this.label = new Text({
+        text: this.l,
+        anchor: 0.5
+    });
+    this.label.x = this.w/2
+    this.label.y = this.h/2
+    this.addChild(this.label);
+    }
+        
+}
+
+fishsprite1.eventMode = 'static';
+
+let draggingFish = false;
+let fishOffsetX = 0;
+let fishOffsetY = 0;
+
+fishsprite1.on('pointerdown', (e) => {
+    draggingFish = true;
+    fishOffsetX = e.global.x - fishsprite1.x;
+    fishOffsetY = e.global.y - fishsprite1.y;
+});
+
+fishsprite1.on('pointerup', (e) => {
+    draggingFish = false;
+});
+
+fishsprite1.on('globalpointermove', (e) => {
+    if (draggingFish) {
+        fishsprite1.x = e.global.x - fishOffsetX;
+        fishsprite1.y = e.global.y - fishOffsetY;
+    }
+});
+
+//Add button to the App
+let butt = new Button("What's Up", 200,60);
+    butt.x = 120;
+    butt.y = 100;
+    butt.on('pointertap', (e) => {
+        butt.tint = 0xFFFFFF * Math.random();
+        butt.label.text = butt.tint;
+        alert("Hi there!");
+    });
+app.stage.addChild(butt);
+
+let butt2 = new Button("What's Up", 200,60);
+    butt2.x = 120;
+    butt2.y = 300;
+
+//Set flag
+let dragging = false;
+butt2.on('pointerdown', (e) => {
+    dragging = true; console.log("Down");
+});
+butt2.on('pointerup', (e) => {
+    dragging = false; console.log("Up");
+});
+butt2.on('globalpointermove', (e) => {
+    if (dragging) {
+        butt2.x = e.global.x - butt2.w/2;
+        butt2.y = e.global.y - butt2.h/2;
+    }
+});
+
+app.stage.addChild(butt2);
+
+//Slider
+class Slider extends Container {
+
+    //Constructor
+    constructor(w) {
+        super(); //Call super
+
+        //Save variables
+        this.w = w;
+
+        //Track
+        this.track = new Graphics()
+                    .rect(0,0, w,5)
+                    .fill("gray");
+        this.addChild(this.track);
+
+        //Button
+        this.button = new Button("",40,40);
+        this.offsetX = -20
+        this.button.x = this.offsetX;
+        this.offsetY = -18;
+        this.button.y = this.offsetY;
+        this.addChild(this.button);
+
+        //Make it draggable
+        //Set flag
+        let dragging = false;
+        this.button.on('pointerdown', (e) => {
+            dragging = true; console.log("Down");
+        });
+        this.button.on('pointerup', (e) => {
+            dragging = false; console.log("Up");
+        });
+        this.button.on('globalpointermove', (e) => {
+            if (dragging) {
+                this.button.x = e.global.x - this.button.w/2 - this.x;
+                if (this.button.x < this.offsetX) 
+                    this.button.x = this.offsetX;
+
+                if (this.button.x > this.w + this.offsetX) 
+                    this.button.x = this.w + this.offsetX;
+
+                console.log( (this.button.x - this.offsetX) / this.w); 
+
+                //this.button.y = e.global.y - this.button.h/2 - this.y;
+            }
+        });
+    }
+
+} //End Slider
+
+let slide = new Slider(200);
+        app.stage.addChild(slide);
+
+        slide.x = 50;
+        slide.y = 50;
+
+</script>
+    
+</body>
+</html>
