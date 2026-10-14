@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script type = "module">    
+
+//Import Pixi
+import {
+    Application,
+    Sprite,
+    Assets,
+    Container,
+    Graphics,
+    Text,
+    TextStyle
+} from './js/pixi.js';
+
+//Create new app
+const app = new Application();
+
+//Initialize the app
+await app.init({
+    width:640,
+    height:480,
+    background:0x1099bb //#1099bb
+});
+document.body.appendChild(app.canvas);
+
+const texture = await Assets.load("img/fish.png");
+
+window.fishsprite1 = new Sprite(texture);
+    fishsprite1.scale.set(0.2);
+    
+
+app.stage.addChild(fishsprite1);
+
+async function animateFish() {
+    await Animate.to(fishsprite1, {
+        x: 100,
+        y: 100,
+        duration: 10 * 1000,
+        easing: Animate.easeInOut
+    });
+
+    await Animate.to(fishsprite1, {
+        x: 300,
+        y: 200,
+        duration: 5 * 1000,
+        easing: Animate.easeInOut
+    });
+
+    await Animate.to(fishsprite1, {
+        x: 500,
+        y: 100,
+        duration: 7 * 1000,
+        easing: Animate.easeInOut
+    });
+
+    await Animate.to(fishsprite1, {
+        x: 400,
+        y: 300,
+        duration: 6 * 1000,
+        easing: Animate.easeInOut
+    });
+
+    await Animate.to(fishsprite1, {
+        x: 200,
+        y: 400,
+        duration: 8 * 1000,
+        easing: Animate.easeInOut
+    });
+
+    await Animate.to(fishsprite1, {
+        x: 100,
+        y: 100,
+        duration: 10 * 1000,
+        easing: Animate.easeInOut
+    });
+}
+
+//Time to animate?
+window.Animate = {};
+
+Animate.linear = (x) => x;
+Animate.easeIn = (x) => x * x;
+Animate.easeOut = (x) => 1 - (1-x)*(1-x);
+Animate.easeInOut = (x) => {
+    if (x < 0.5) {
+        return 2 * x * x;
+    } else {
+        return 1 - Math.pow(-2 * x + 2, 2) / 2;
+    }
+};
+
+Animate.to = function(obj, end) {
+
+    return new Promise ((resolve, reject) => {
+
+        let duration = end.duration;
+
+        //Start state
+        let start = {
+            x : obj.x,
+            y : obj.y
+        };
+
+        if (end.easing == undefined) end.easing = Animate.linear;
+
+        let startTime = Date.now();
+
+        //Animation loop
+        function loop() {
+
+            let ticker = Date.now() - startTime;
+            let delta = ticker/duration;
+            let ease = end.easing(delta);
+
+            if (delta >= 1) {
+                obj.x = end.x;
+                obj.y = end.y;
+                resolve();
+                return;
+            }
+
+            function lerp(a, b, n) {
+                return a + ( (b-a) * n );
+            }
+
+            obj.x = lerp(start.x, end.x, ease);
+            obj.y = lerp(start.y, end.y, ease);
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+    });
+}
+
+animateFish();
+
+
+
+window.sleep = function (ms) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, ms);
+    });
+};
+
+
+
+</script>    
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenes</title>
+</head>
+<body>
+    
+<script type = "module">    
+
+//Import Pixi
+import {
+    Application,
+    Sprite,
+    Assets,
+    Container,
+    Graphics,
+    Text,
+    TextStyle
+} from './js/pixi.js';
+
+//import director
+import {Director} from './js/director.js';
+
+//Import Button
+import {Button} from './js/button.js';
+
+
+//Create new app
+const app = new Application();
+
+//Initialize the app
+await app.init({
+    width:640,
+    height:480,
+    background:0xF2E7EF //#F2E7EF
+});
+document.body.appendChild(app.canvas);
+
+//Initialize the director
+let director = new Director(app.stage);
+
+//Basic scene
+let scene1 = new Container();
+
+//Load in the fish
+const texture = await Assets.load("img/fish.png");
+
+//Create the fish sprite
+const fish = new Sprite(texture);
+fish.scale.set(.3);
+
+//Add the fish to the scene
+scene1.addChild(fish);
+
+let button1 = new Button('Next Fish', 250, 50);
+    button1.x = 200;
+    button1.y = 300;
+    button1.tint = 0x00aaff;
+    button1.padding = 10;
+    button1.borderColor = 0x000000;
+    button1.on('pointerdown', (e) => {
+        director.showScene('secondScene');
+    });
+
+scene1.addChild(button1);
+
+
+
+let scene2 = new Container();
+const fish2 = new Sprite(texture);
+fish2.scale.set(.3);
+fish2.x = 300;
+fish2.tint = 0xff6600;
+
+scene2.addChild(fish2);
+
+let button2 = new Button('Previous Fish', 250, 50);
+    button2.x = 200;
+    button2.y = 300;
+    button2.tint = 0xff6600;
+    button2.on('pointerdown', (e) => {
+        director.showScene('firstScene');
+    });
+scene2.addChild(button2);
+
+//Add it to the director
+director.addScene('firstScene', scene1);
+director.addScene('secondScene', scene2);
+
+console.log(director);
+
+</script>
+
+</body>
+</html>
