@@ -30,6 +30,8 @@ Animate.to = function(obj, end) {
         };
 
         //Set defaults
+        if (end.x == undefined) end.x = obj.x;
+        if (end.y == undefined) end.y = obj.y;
         if (end.easing == undefined) end.easing = Animate.linear;
         if (end.tint == undefined) end.tint = obj.tint;
         if (end.alpha == undefined) end.alpha = obj.alpha;

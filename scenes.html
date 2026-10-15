@@ -61,7 +61,9 @@ let button1 = new Button('Next Fish', 250, 50);
     button1.padding = 10;
     button1.borderColor = 0x000000;
     button1.on('pointerdown', (e) => {
-        director.showScene('secondScene');
+        director.showScene('secondScene', {
+            transition : director.fade
+        });
     });
 
 scene1.addChild(button1);
